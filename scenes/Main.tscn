@@ -38,8 +38,8 @@ light_energy = 0.8
 environment = SubResource("Environment_u8b0u")
 
 [node name="Player" type="Node3D" parent="."]
-script = ExtResource("1_2o77f")
 position = Vector3(0, 4, 14)
+script = ExtResource("1_2o77f")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
 current = true
