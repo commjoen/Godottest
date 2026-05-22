@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dnl5ecv8f40p8"]
+[gd_scene load_steps=10 format=3 uid="uid://dnl5ecv8f40p8"]
 
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="1_2o77f"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_l6t0i"]
 
 [sub_resource type="Environment" id="Environment_u8b0u"]
 background_mode = 2
@@ -40,6 +41,20 @@ environment = SubResource("Environment_u8b0u")
 [node name="Player" type="Node3D" parent="."]
 position = Vector3(0, 4, 14)
 script = ExtResource("1_2o77f")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_l6t0i")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="GameManager"]
+
+[node name="StatusLabel" type="Label" parent="GameManager/CanvasLayer"]
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 760.0
+offset_bottom = 92.0
+theme_override_font_sizes/font_size = 22
+text = "Find underwater landmarks: 2 remaining\nMove: WASD/Arrows  Up: E  Down: Q  Look: Mouse"
+autowrap_mode = 2
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
 current = true
