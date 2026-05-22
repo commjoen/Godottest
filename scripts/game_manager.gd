@@ -19,8 +19,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if _player == null:
-		_status_label.text = "Missing player node. Check game_manager.gd paths."
-		return
+		_player = get_node_or_null(player_path) as Node3D
+		if _player == null:
+			_status_label.text = "Waiting for player..."
+			return
 
 	var reached_this_frame := false
 	for goal_path in goal_paths:
@@ -47,7 +49,7 @@ func _update_status_text() -> void:
 
 	var total_goals := goal_paths.size()
 	if reached_count >= total_goals and total_goals > 0:
-		_status_label.text = "Mission complete! You found every landmark.\nPress F5 to play again."
+		_status_label.text = "Mission complete! You found every landmark.\nRestart to play again."
 		return
 
 	var remaining := total_goals - reached_count
