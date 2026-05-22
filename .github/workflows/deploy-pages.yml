@@ -17,6 +17,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GODOT_TEMPLATE_VERSION: 4.2.2.stable
+      GODOT_TEMPLATE_SOURCE_BASE: /root/.local/share/godot/export_templates
+      GODOT_REQUIRED_WEB_TEMPLATE_FILES: |
+        web_debug.zip
+        web_release.zip
     container:
       image: barichello/godot-ci:4.2.2@sha256:36c832b672add214f2217e0ead974c6c98a43bd86e0b279f2ba090d411a3c739
     steps:
@@ -28,10 +34,34 @@ jobs:
 
       - name: Prepare Godot export templates
         run: |
+          TEMPLATE_VERSION="$GODOT_TEMPLATE_VERSION"
+          SOURCE_DIR="$GODOT_TEMPLATE_SOURCE_BASE/$TEMPLATE_VERSION"
+          TARGET_DIR="$HOME/.local/share/godot/export_templates/$TEMPLATE_VERSION"
+
+          if [ ! -d "$SOURCE_DIR" ]; then
+            echo "Missing Godot export template directory: $SOURCE_DIR" >&2
+            exit 1
+          fi
+
           mkdir -p "$HOME/.local/share/godot/export_templates"
-          cp -r /root/.local/share/godot/export_templates/4.2.2.stable "$HOME/.local/share/godot/export_templates/"
-          test -f "$HOME/.local/share/godot/export_templates/4.2.2.stable/web_debug.zip"
-          test -f "$HOME/.local/share/godot/export_templates/4.2.2.stable/web_release.zip"
+          cp -r "$SOURCE_DIR" "$HOME/.local/share/godot/export_templates/"
+
+          validation_failed=0
+          OLD_IFS="$IFS"
+          IFS='
+          '
+          for template_file in $GODOT_REQUIRED_WEB_TEMPLATE_FILES; do
+            [ -z "$template_file" ] && continue
+            if [ ! -f "$TARGET_DIR/$template_file" ]; then
+              echo "Missing required Godot template: $TARGET_DIR/$template_file" >&2
+              validation_failed=1
+            fi
+          done
+          IFS="$OLD_IFS"
+
+          if [ "$validation_failed" -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Export Web build
         run: |
