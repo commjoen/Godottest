@@ -26,6 +26,13 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Prepare Godot export templates
+        run: |
+          mkdir -p "$HOME/.local/share/godot/export_templates"
+          cp -r /root/.local/share/godot/export_templates/4.2.2.stable "$HOME/.local/share/godot/export_templates/"
+          test -f "$HOME/.local/share/godot/export_templates/4.2.2.stable/web_debug.zip"
+          test -f "$HOME/.local/share/godot/export_templates/4.2.2.stable/web_release.zip"
+
       - name: Export Web build
         run: |
           mkdir -p build/web
