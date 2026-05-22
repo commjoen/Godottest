@@ -1,12 +1,13 @@
 # Godottest
 
-A minimal **Godot 4** underwater exploration prototype configured for **Web export** and automated **GitHub Pages deployment**.
+A minimal **Godot 4** underwater exploration game (first playable version) configured for **Web export** and automated **GitHub Pages deployment**.
 
 ## What is implemented
 
 - Godot 4 project scaffold (`project.godot`)
-- Prototype 3D underwater scene (`scenes/Main.tscn`)
+- Prototype 3D underwater scene with a simple objective loop (`scenes/Main.tscn`)
 - Player swim controller (`scripts/player_controller.gd`)
+- Landmark objective manager and mission UI (`scripts/game_manager.gd`)
 - Web export preset (`export_presets.cfg`)
 - GitHub Actions workflow to build and publish to GitHub Pages (`.github/workflows/deploy-pages.yml`)
 
@@ -17,6 +18,7 @@ A minimal **Godot 4** underwater exploration prototype configured for **Web expo
 - Swim down: `Q`
 - Look: Mouse
 - Toggle mouse capture: `Esc`
+- Goal: find all underwater landmarks
 
 ## Run locally (Godot editor)
 
@@ -44,3 +46,7 @@ The workflow in `.github/workflows/deploy-pages.yml`:
 4. Deploys to GitHub Pages.
 
 After enabling **Pages** in repository settings (source: **GitHub Actions**), each successful run updates the hosted game.
+
+Published site URL format:
+
+`https://<your-github-username>.github.io/Godottest/`
